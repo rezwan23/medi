@@ -15,8 +15,42 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
+        if($request->isAjax == 1){
+            $products = Product::with('variantPrices', 'variantPrices.variantOne', 'variantPrices.variantTwo', 'variantPrices.variantThree');
+            
+            if($request->filled('title')){
+                $products->where('title', 'like', '%'.$request->title.'%');
+            }
+
+            if($request->filled('priceFrom')){
+                $products->whereHas('variantPrices', function($query) use ($request){
+                    $query->where('price', '>=', $request->priceFrom);
+                });
+            }
+
+            if($request->filled('priceTo')){
+                $products->whereHas('variantPrices', function($query) use ($request){
+                    $query->where('price', '<=', $request->priceTo);
+                });
+            }
+
+            if($request->filled('variant')){
+                $productIds = ProductVariant::where('variant', $request->variant)->pluck('product_id');
+                
+                $products->whereIn('id', $productIds);
+            }
+            if($request->filled('date')){
+                
+                $products->whereDate('created_at', $request->date);
+            }
+
+            return [
+                'total' => $products->count(),
+                'products' => $products->paginate(2), 
+            ];
+        }
         return view('products.index');
     }
 
@@ -87,5 +121,11 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         //
+    }
+
+
+    public function getVariants()
+    {
+        return Variant::with('variantValue')->select(['id', 'title'])->get();
     }
 }

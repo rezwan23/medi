@@ -13,7 +13,7 @@
         "axios": "^0.19",
         "bootstrap": "^4.0.0",
         "cross-env": "^7.0",
-        "jquery": "^3.2",
+        "jquery": "^3.6.0",
         "laravel-mix": "^5.0.1",
         "lodash": "^4.17.19",
         "popper.js": "^1.12",
@@ -27,7 +27,11 @@
         "@fortawesome/fontawesome-free": "^5.14.0",
         "@ttskch/select2-bootstrap4-theme": "^1.4.0",
         "jquery.easing": "^1.4.1",
+        "laravel-vue-pagination": "^2.3.1",
+        "moment": "^2.29.1",
         "select2": "^4.0.13",
+        "sweetalert2": "^10.16.7",
+        "v-select2-component": "^0.4.7",
         "vue-input-tag": "^2.0.7",
         "vue2-dropzone": "^3.6.0"
     }
